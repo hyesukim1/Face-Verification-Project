@@ -1,8 +1,9 @@
+# -*- coding: utf-8 -*-
 import dlib
 import cv2
 import numpy as np
 
-# 얼굴 랜드마크 넘버
+# num of face landmark
 ALL = list(range(0, 68))
 RIGHT_EYEBROW = list(range(17, 22))
 LEFT_EYEBROW = list(range(22, 27))
@@ -15,7 +16,7 @@ JAWLINE = list(range(0, 17))
 
 # face detector, predictor
 detector = dlib.get_frontal_face_detector()
-predictor = dlib.shape_predictor('C:/Users/USER/face_reco/shape_predictor_68_face_landmarks.dat')
+predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
 
 cap = cv2.VideoCapture(0)
 
@@ -32,10 +33,9 @@ while True:
 
     for face in face_detector:
         # face wrapped with rectangle
-        cv2.rectangle(image, (face.left(), face.top()), (face.right(), face.bottom()),
-                      (0, 0, 255), 3)
+        cv2.rectangle(image, (face.left(), face.top()), (face.right(), face.bottom()),(0, 0, 255), 3)
 
-        landmarks = predictor(image, face)  # 얼굴에서 68개 점 찾기
+        landmarks = predictor(image, face)  # find 68 landmark from face
 
         landmark_list = []
         # append (x, y) in landmark_list
@@ -57,3 +57,12 @@ with open("test.json", "w") as json_file:
 	json_file.write('\n')
 
 cap.release()
+
+'''
+거리 리스트를 담고
+for a in 거리리스트
+if 리스트=실제거리
+비디오 continue
+or
+얼굴 bbox 크기가 일정부분 작아지면 인지
+'''
