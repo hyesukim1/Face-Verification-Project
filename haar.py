@@ -1,12 +1,13 @@
+# -*- coding: utf-8 -*-
 import cv2
 import face_recognition
 import os
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(0, cv2.CAP_DSHOW)
 cap.set(3, 640)
 cap.set(4, 480)
 
-face_detector = cv2.CascadeClassifier('C:/Users/USER/face_reco/haarcascade_frontface.xml')
+face_detector = cv2.CascadeClassifier('haarcascade_frontface.xml')
 
 while(True):
     ret, cam = cap.read()
@@ -24,6 +25,6 @@ while(True):
         
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
-                     
+                
 cap.release()
 cv2.destroyAllWindows()
