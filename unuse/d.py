@@ -18,7 +18,8 @@ JAWLINE = list(range(0, 17))
 detector = dlib.get_frontal_face_detector()
 predictor = dlib.shape_predictor('shape_predictor_68_face_landmarks.dat')
 
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(1)
+# 회사 웹캠은 1, 노트북 카메라는 0
 
 while True:
 
