@@ -18,8 +18,8 @@ def blurBoxes(image, boxes):
         sub = image[x:w, y:h]
 
         # apply GaussianBlur on cropped area
-        blur = cv2.GaussianBlur(sub,(3,3),0)
-        # blur = cv2.blur(sub, (10,10))
+        # blur = cv2.GaussianBlur(sub,(3,3),0)
+        blur = cv2.blur(sub, (5,5))
 
         # paste blurred image on the original image
         image[x:w, y:h] = blur
@@ -46,7 +46,7 @@ while(True):
     if(ret) :
         cv2.imshow('camera', frame_blur)
         
-        if cv2.waitKey(0) & 0xFF == ord('q'):
+        if cv2.waitKey(1) & 0xFF == ord('q'):
             break
 
 
