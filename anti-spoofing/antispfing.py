@@ -18,54 +18,62 @@ def calc_hist(img):
         histogram[j] = histr
     return np.array(histogram)
 
+sample_number = 1
+count = 0
+measures = np.zeros(sample_number, dtype=float)
+
 while True:
     ret, frame = cap.read()
     if ret is False:
         print ("Error happens from camera")
 
     frame = cv2.flip(frame, 1)
-    gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-    faces = face_detector.detectMultiScale(gray)
+    # gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+    # faces = face_detector.detectMultiScale(gray)
 
-    for (x, y, w, h) in faces:
+    # measures[count%sample_number] = 0
+    # point = (0,0)
+
+    # for (x, y, w, h) in faces:
         
-        roi = frame[y:y+h, x:x+w]
+    #     roi = frame[y:y+h, x:x+w]
 
-        img_ycrcb = cv2.cvtColor(roi, cv2.COLOR_BGR2YCR_CB)
-        img_luv = cv2.cvtColor(roi, cv2.COLOR_BGR2LUV)
+    #     img_ycrcb = cv2.cvtColor(roi, cv2.COLOR_BGR2YCR_CB)
+    #     img_luv = cv2.cvtColor(roi, cv2.COLOR_BGR2LUV)
 
-        ycrcb_hist = calc_hist(img_ycrcb)
-        luv_hist = calc_hist(img_luv)
+    #     ycrcb_hist = calc_hist(img_ycrcb)
+    #     luv_hist = calc_hist(img_luv)
 
-        cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
+    #     feature_vector = np.append(ycrcb_hist.ravel(), luv_hist.ravel())
+    #     feature_vector = feature_vector.reshape(1, len(feature_vector))
 
-        feature_vector = np.append(ycrcb_hist.ravel(), luv_hist.ravel())
-        feature_vector = feature_vector.reshape(1, len(feature_vector))
+    #     prediction = model.predict_proba(feature_vector)
+    #     prob = prediction[0][1]
 
-        prediction = clf.predict_proba(feature_vector)
-        prob = prediction[0][1]
+    #     measures[count % sample_number] = prob
 
-        measures[count % sample_number] = prob
-        print measures, np.mean(measures)
+    #     cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 0, 0), 2)
 
-        if 0 not in measures:
-            text = "True"
-            if np.mean(measures) >= 0.7:
-                text = "False"
-                font = cv2.FONT_HERSHEY_SIMPLEX
-                cv2.putText(img=img_bgr, text=text, org=point, fontFace=font, fontScale=0.9, color=(0, 0, 255),
-                            thickness=2, lineType=cv2.LINE_AA)
-            else:
-                font = cv2.FONT_HERSHEY_SIMPLEX
-                cv2.putText(img=img_bgr, text=text, org=point, fontFace=font, fontScale=0.9,
-                            color=(0, 255, 0), thickness=2, lineType=cv2.LINE_AA)
-        
-        cv2.imshow('camera', frame)
+    #     point = (x, y-5)
 
-        key = cv2.waitKey(1)
+    #     # print(measures)
+    #     if 0 not in measures:
+    #         text = "True"
+    #         if np.mean(measures) >= 0.7:
+    #             text = "False"
+    #             font = cv2.FONT_HERSHEY_SIMPLEX
+    #             cv2.putText(img=frame, text=text, org=point, fontFace=font, fontScale=0.9, color=(0, 0, 255),
+    #                             thickness=2, lineType=cv2.LINE_AA)
+    #         else:
+    #             font = cv2.FONT_HERSHEY_SIMPLEX
+    #             cv2.putText(img=frame, text=text, org=point, fontFace=font, fontScale=0.9,
+    #                         color=(0, 255, 0), thickness=2, lineType=cv2.LINE_AA)
 
-        if cv2.waitKey(0) & 0xFF == ord('q'):
-            break
+    count +=1
+    cv2.imshow('camera', frame)
+    key = cv2.waitKey(1)
+    if cv2.waitKey(0) & 0xFF == ord('q'):
+        break
 
     cap.release()
     cv2.destroyAllWindows()       

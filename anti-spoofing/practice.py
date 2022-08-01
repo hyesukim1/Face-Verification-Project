@@ -2,6 +2,8 @@
 import cv2
 import numpy as np
 
+face_detector = cv2.CascadeClassifier('haarcascade_frontface.xml')
+
 def calc_hist(img):
     histogram = [0] * 3
     for j in range(3):
