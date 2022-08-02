@@ -4,7 +4,7 @@ import cv2
 import os
 #practice
 
-cap = cv2.VideoCapture(1)
+cap = cv2.VideoCapture(0)
 cap.set(3, 640)
 cap.set(4, 480)
 
@@ -15,14 +15,14 @@ def blurBoxes(image, boxes):
 
     for (x,y,w,h) in boxes:
         # crop the image due to the current box
-        sub = image[x:w, y:h]
+        sub = image[y:y+h, x:x+w]
 
         # apply GaussianBlur on cropped area
         # blur = cv2.GaussianBlur(sub,(3,3),0)
-        blur = cv2.blur(sub, (5,5))
+        blur = cv2.blur(sub, (25,25))
 
         # paste blurred image on the original image
-        image[x:w, y:h] = blur
+        image[y:y+h, x:x+w] = blur
 
     return image
 
@@ -39,9 +39,9 @@ while(True):
     frame_blur = blurBoxes(frame, faces)
     # print("Num of faces: ", str(len(faces)))
 
-    # if len(faces):
-    #     for (x,y,w,h) in faces:
-    #         cv2.rectangle(frame,(x,y),(x+w, y+h),(255,0,0),2)
+    if len(faces):
+        for (x,y,w,h) in faces:
+            cv2.rectangle(frame,(x,y),(x+w, y+h),(255,0,0),2)
 
     if(ret) :
         cv2.imshow('camera', frame_blur)
